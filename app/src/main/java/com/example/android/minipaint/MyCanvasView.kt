@@ -11,8 +11,8 @@ private const val STROKE_WIDTH = 12f // has to be float
 
 class MyCanvasView(context: Context) : View(context) {
 
-    private lateinit var extraCanvas: Canvas
-    private lateinit var extraBitmap: Bitmap
+//    private lateinit var extraCanvas: Canvas
+//    private lateinit var extraBitmap: Bitmap
 
 
     private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
@@ -52,10 +52,10 @@ class MyCanvasView(context: Context) : View(context) {
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        if (::extraBitmap.isInitialized) extraBitmap.recycle()
-        extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        extraCanvas = Canvas(extraBitmap)
-        extraCanvas.drawColor(backgroundColor)
+//        if (::extraBitmap.isInitialized) extraBitmap.recycle()
+//        extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+//        extraCanvas = Canvas(extraBitmap)
+//        extraCanvas.drawColor(backgroundColor)
 
         // Calculate a rectangular frame around the picture.
         val inset = 40
@@ -64,15 +64,16 @@ class MyCanvasView(context: Context) : View(context) {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(extraBitmap, 0f, 0f, null)
+//        canvas.drawBitmap(extraBitmap, 0f, 0f, null)
+        // Draw a frame around the canvas
+        canvas.drawRect(frame, paint)
         // Draw the drawing so far
         canvas.drawPath(drawing, paint)
         // Draw any current squiggle
         canvas.drawPath(curPath, paint)
-        // Draw a frame around the canvas
-        canvas.drawRect(frame, paint)
-        // Draw a frame around the canvas.
-        canvas.drawRect(frame, paint)
+        // According mentor Diraj
+        canvas.drawColor(backgroundColor)
+        canvas.drawPath(path, paint)
     }
 
     private fun touchStart() {
@@ -102,7 +103,7 @@ class MyCanvasView(context: Context) : View(context) {
             currentX = motionTouchEventX
             currentY = motionTouchEventY
             // Draw the path in the extra bitmap to cache it.
-            extraCanvas.drawPath(path, paint)
+//            extraCanvas.drawPath(path, paint)
         }
         invalidate()
     }
@@ -111,7 +112,6 @@ class MyCanvasView(context: Context) : View(context) {
         // Reset the path so it doesn't get drawn again.
         path.reset()
     }
-
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         motionTouchEventX = event.x
@@ -124,5 +124,4 @@ class MyCanvasView(context: Context) : View(context) {
         }
         return true
     }
-
 }
