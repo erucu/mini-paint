@@ -111,6 +111,10 @@ class MyCanvasView(context: Context) : View(context) {
     private fun touchUp() {
         // Reset the path so it doesn't get drawn again.
         path.reset()
+        // Add the current path to the drawing so far
+        drawing.addPath(curPath)
+        // Rewind the current path for the next touch
+        curPath.reset()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
